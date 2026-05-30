@@ -54,6 +54,50 @@
             margin-top:18px;
             color:#666;
         }
+        .password-box{
+    position:relative;
+    margin-bottom:18px;
+}
+
+.password-box input{
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:15px;
+}
+
+.password-box span{
+    position:absolute;
+    right:15px;
+    top:40%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    font-size:18px;
+}
+        @media (max-width:768px){
+
+    .container{
+        width:90%;
+        max-width:400px;
+        padding:35px 25px;
+    }
+
+    h1{
+        font-size:42px;
+    }
+
+    input{
+        padding:16px;
+        font-size:16px;
+    }
+
+    button{
+        padding:16px;
+        font-size:18px;
+    }
+
+}
 
     </style>
 </head>
@@ -70,7 +114,19 @@
 
     <input type="text" name="username" placeholder="Enter Username">
 
-    <input type="password" name="password" placeholder="Enter Password">
+            <div class="password-box">
+
+    <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Enter Password">
+
+    <span id="eye" onclick="togglePassword()">
+        👁️
+    </span>
+
+</div>
 
     <button type="submit">
         Login
@@ -88,6 +144,31 @@
         </p>
 
     </div>
+<script>
 
+function togglePassword(){
+
+    const password =
+        document.getElementById("password");
+
+    const eye =
+        document.getElementById("eye");
+
+    if(password.type === "password"){
+
+        password.type = "text";
+        eye.innerHTML = "🙈";
+
+    }else{
+
+        password.type = "password";
+        eye.innerHTML = "👁️";
+
+    }
+
+}
+
+</script>
 </body>
+
 </html>
