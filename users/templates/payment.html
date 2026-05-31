@@ -267,22 +267,25 @@ select{
             <p id="location-result" style="color:#1f8f5f; font-weight:bold; margin-top:-15px; margin-bottom:20px; font-size:14px;"></p>
 
             <label>Payment Method</label>
-            <select
-                name="payment_method"
-                id="payment_method"
-                required
-                style="
-                width:100%;
-                padding:14px;
-                border-radius:12px;
-                margin-bottom:25px;
-                background:#2a2a2a;
-                color:white;
-                font-size:15px;
-                ">
-                <option value="COD">Cash On Delivery</option>
-                <option value="UPI">UPI (GPay / PhonePe / Paytm)</option>
-            </select>
+            <select id="payment_method" name="payment_method" onchange="toggleUPI()">
+    <option value="COD">Cash On Delivery</option>
+    <option value="UPI">UPI Payment</option>
+</select>
+
+<div id="upi_section" style="display:none; margin-top:20px;">
+    <h3>Pay via UPI</h3>
+
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=swapkart@upi">
+
+    <p>
+        UPI ID: swapkart@upi
+    </p>
+
+    <input
+        type="text"
+        name="transaction_id"
+        placeholder="Enter Transaction ID">
+</div>
 
             <!-- UPI Details Section (Shown when UPI is selected) -->
             <div id="upi-details-section" style="display:none; background:#f9f9f9; padding:20px; border-radius:15px; border:1.5px dashed #1f8f5f; margin-bottom:25px;">
@@ -854,6 +857,23 @@ function processSimulatedPayment() {
         }, 1500);
         
     }, 1500);
+}
+</script>
+<script>
+function toggleUPI() {
+
+    const method =
+        document.getElementById("payment_method").value;
+
+    const upi =
+        document.getElementById("upi_section");
+
+    if(method === "UPI"){
+        upi.style.display = "block";
+    }
+    else{
+        upi.style.display = "none";
+    }
 }
 </script>
 
