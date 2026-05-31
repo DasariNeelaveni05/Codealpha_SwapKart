@@ -71,14 +71,20 @@ def login(request):
 
     if request.method == "POST":
 
-        username = request.POST.get('username', '').strip()
+        login_input = request.POST.get('username', '').strip()
         password = request.POST.get('password', '')
 
-        if not username or not password:
+        if not login_input or not password:
             return render(request, 'login.html', {
                 'error': 'Please enter both username and password'
-            })
+    })
+    from django.contrib.auth.models import User
 
+    try:
+        user_obj = User.objects.get(email=login_input)
+        username = user_obj.username
+    except:
+        username = login_input
         user = authenticate(
             request,
             username=username,
