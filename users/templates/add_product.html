@@ -269,12 +269,15 @@ select{
                 </p>
 
                 <label class="custom-upload">
-
+                    Choose Image
                     <input type="file"
+                           id="product-image-file"
                            name="image"
+                           accept="image/*"
                            hidden>
-
                 </label>
+                
+                <p id="file-name-display" style="color:#2ecc71; font-weight:bold; margin-top:10px; font-size:14px;"></p>
 
             </div>
 
@@ -287,6 +290,16 @@ select{
         </form>
 
     </div>
+
+    <script>
+        document.getElementById('product-image-file').addEventListener('change', function() {
+            if(this.files && this.files.length > 0) {
+                document.getElementById('file-name-display').innerText = "Selected: " + this.files[0].name;
+            } else {
+                document.getElementById('file-name-display').innerText = "";
+            }
+        });
+    </script>
 
 </body>
 </html>

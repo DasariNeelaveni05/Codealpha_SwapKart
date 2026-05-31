@@ -47,9 +47,22 @@ class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     ordered_at = models.DateTimeField(auto_now_add=True)
+    
+    # Shipping details
+    full_name = models.CharField(max_length=200, default='')
+    phone = models.CharField(max_length=20, default='')
+    address = models.TextField(default='')
+    city = models.CharField(max_length=100, default='')
+    state = models.CharField(max_length=100, default='')
+    pincode = models.CharField(max_length=20, default='')
+    
+    # Payment details
+    payment_method = models.CharField(max_length=50, default='COD')  # 'COD', 'UPI', 'Debit Card'
+    payment_status = models.CharField(max_length=50, default='Pending')  # 'Pending', 'Paid', 'Refunded'
+    transaction_id = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
-        return self.user.username
+        return f"{self.user.username} - {self.product.title}"
 
 class ExchangeRequest(models.Model):
 

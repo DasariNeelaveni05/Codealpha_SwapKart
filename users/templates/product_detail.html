@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ product.title }} - SwapKart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7f6;
+            color: #222;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #1f8f5f, #111);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            white-space: nowrap;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: white;
+            color: #1f8f5f;
+            transform: translateY(-2px);
+        }
+
+        .detail-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.06);
+            overflow: hidden;
+            display: flex;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .image-section {
+            flex: 1.2;
+            background: #f8f8f8;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+        }
+
+        .image-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            max-height: 500px;
+        }
+
+        .content-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .category-badge {
+            background: #e8f7ef;
+            color: #1f8f5f;
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            width: fit-content;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #111;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .price-tag {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1f8f5f;
+            margin-bottom: 20px;
+        }
+
+        .description-box {
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+            margin-bottom: 25px;
+        }
+
+        .description-box h3 {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .description-box p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .exchange-banner {
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            color: #b78103;
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+
+        .primary-btn {
+            background: #1f8f5f;
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: #145e3e;
+        }
+
+        .secondary-btn {
+            background: #ff9800;
+            color: white;
+        }
+
+        .secondary-btn:hover {
+            background: #e65100;
+        }
+
+        .outline-btn {
+            background: transparent;
+            color: #1f8f5f;
+            border: 1.5px solid #1f8f5f;
+        }
+
+        .outline-btn:hover {
+            background: #e8f7ef;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #1f8f5f;
+        }
+
+        @media (max-width: 768px) {
+            .detail-container {
+                flex-direction: column;
+                margin: 20px;
+                padding: 20px;
+            }
+            .image-section {
+                min-height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">♻️ SwapKart</div>
+        <div class="nav-links">
+            <a href="/home/">🏠 Home</a>
+            <a href="/products/">🛍 Products</a>
+            <a href="/add-product/">➕ Add Product</a>
+            <a href="/cart/">🛒 Cart</a>
+            <a href="/my-orders/">📦 Orders</a>
+            <a href="/my-uploads/">📤 Uploads</a>
+            <a href="/logout/">🚪 Logout</a>
+        </div>
+    </div>
+
+    <div style="max-width: 1000px; margin: 40px auto 0 auto; padding: 0 20px;">
+        <a href="/products/" class="back-link">← Back to Products</a>
+    </div>
+
+    <div class="detail-container">
+        
+        <div class="image-section">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.title }}">
+            {% else %}
+                <img src="https://via.placeholder.com/600x500?text=No+Image" alt="No image available">
+            {% endif %}
+        </div>
+
+        <div class="content-section">
+            <div>
+                <span class="category-badge">📦 {{ product.category }}</span>
+                <h1>{{ product.title }}</h1>
+                <div class="price-tag">₹{{ product.price }}</div>
+
+                <div class="description-box">
+                    <h3>Description</h3>
+                    <p>{{ product.description }}</p>
+                </div>
+
+                {% if product.exchange %}
+                    <div class="exchange-banner">
+                        <span>🔄</span> This product is available for exchange!
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="btn-group">
+                <div style="display: flex; gap: 12px;">
+                    <a href="/add-to-cart/{{ product.id }}/" class="btn outline-btn" style="flex: 1;">🛒 Add To Cart</a>
+                    <a href="/buy-now/{{ product.id }}/" class="btn secondary-btn" style="flex: 1;">⚡ Buy Now</a>
+                </div>
+                {% if product.exchange %}
+                    <a href="/exchange/{{ product.id }}/" class="btn primary-btn">🔄 Exchange Request</a>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

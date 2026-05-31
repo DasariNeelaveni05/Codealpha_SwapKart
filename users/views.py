@@ -34,14 +34,21 @@ def signup(request):
 
     if request.method == "POST":
 
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        password = request.POST.get('password', '')
+
+        if not username or not email or not password:
+            return render(request, 'signup.html', {
+                'error': 'All fields are required'
+            })
 
         if User.objects.filter(username=username).exists():
 
             return render(request, 'signup.html', {
-                'error': 'Username already exists'
+                'error': 'Username already exists',
+                'username': username,
+                'email': email
             })
 
         User.objects.create_user(
@@ -64,30 +71,36 @@ def login(request):
 
     if request.method == "POST":
 
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '')
 
-        print("USERNAME =", username)
-        print("PASSWORD =", password)
+        if not username or not password:
+            return render(request, 'login.html', {
+                'error': 'Please enter both username and password'
+            })
 
         user = authenticate(
-    request,
-    username=username,
-    password=password
-)
-
-        print("USER =", user)
+            request,
+            username=username,
+            password=password
+        )
 
         if user is not None:
 
             auth_login(request, user)
+            
+            # Respect the next redirect parameter if present
+            next_url = request.GET.get('next', '/home/')
+            if not next_url.startswith('/') or next_url.startswith('//'):
+                next_url = '/home/'
 
-            return redirect('/home/')
+            return redirect(next_url)
 
         else:
 
             return render(request, 'login.html', {
-                'error': 'Invalid username or password'
+                'error': 'Invalid username or password',
+                'username': username
             })
 
     return render(request, 'login.html')
@@ -257,9 +270,38 @@ def buy_now(request, product_id):
 
     if request.method == "POST":
 
+        full_name = request.POST.get('full_name', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        address = request.POST.get('address', '').strip()
+        city = request.POST.get('city', '').strip()
+        state = request.POST.get('state', '').strip()
+        pincode = request.POST.get('pincode', '').strip()
+        payment_method = request.POST.get('payment_method', 'COD').strip()
+        transaction_id = request.POST.get('transaction_id', '').strip()
+
+        # Set payment status: COD is Pending, UPI is Paid (since it went through simulated verification)
+        if payment_method == 'UPI':
+            payment_status = 'Paid'
+        else:
+            payment_status = 'Pending'
+
         Order.objects.create(
             user=request.user,
-            product=product
+            product=product,
+            full_name=full_name,
+            phone=phone,
+            address=address,
+            city=city,
+            state=state,
+            pincode=pincode,
+            payment_method=payment_method,
+            payment_status=payment_status,
+            transaction_id=transaction_id if transaction_id else None
+        )
+
+        messages.success(
+            request,
+            f"🎉 Your order for {product.title} has been placed successfully!"
         )
 
         return redirect('/my-orders/')
@@ -269,10 +311,6 @@ def buy_now(request, product_id):
                   {
                       'product': product
                   })
-
-
-
-    return redirect('/my-orders/')
 
 @login_required
 def my_orders(request):
@@ -318,18 +356,10 @@ def delete_product(request, product_id):
     if product.user == request.user:
         product.delete()
 
-    return redirect('/homes/')
-
-
-
-
-@login_required
-def delete_product(request, product_id):
-
-    product = Product.objects.get(id=product_id)
-
-    if product.user == request.user:
-        product.delete()
+    messages.success(
+        request,
+        "🗑 Product deleted successfully."
+    )
 
     return redirect('/my-uploads/')
 

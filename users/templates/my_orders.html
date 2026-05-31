@@ -172,40 +172,102 @@
 </div>
     <h1>📦 My Orders</h1>
 
-    <div class="container">
+    {% if messages %}
+        <div style="max-width:800px; margin: 0 auto 30px auto;">
+            {% for message in messages %}
+                <div style="background:#e8f5ef; color:#1f8f5f; padding:15px; border-radius:12px; font-weight:bold; border:1px solid #c8e6c9; text-align:center;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="container" style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; align-items: center; padding: 0 20px 40px 20px;">
 
         {% for order in orders %}
 
-        <div class="card">
-
-            <img src="{{ order.product.image.url }}">
-
-            <div class="content">
-
-                <h2>
-                    {{ order.product.title }}
-                </h2>
-
-                <p>
-                    ₹{{ order.product.price }}
-                </p>
-
-                <p class="status">
-                    ✅ Payment Successful
-                </p>
-
+        <div class="card" style="width: 100%; max-width: 850px; display: flex; flex-direction: row; border-radius: 20px; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.06); overflow: hidden; border: 1px solid #eee; transition: 0.3s;">
             
-                <a href="/cancel-order/{{ order.id }}/"
+            <div style="width: 250px; min-width: 250px; height: 100%; min-height: 220px; background: #f8f8f8;">
+                {% if order.product.image %}
+                    <img src="{{ order.product.image.url }}" style="width: 100%; height: 100%; min-height: 220px; object-fit: cover;">
+                {% else %}
+                    <img src="https://via.placeholder.com/250x220?text=No+Image" style="width: 100%; height: 100%; min-height: 220px; object-fit: cover;">
+                {% endif %}
+            </div>
 
+            <div class="content" style="padding: 25px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                        <h2 style="color: #1f8f5f; margin: 0; font-size: 22px; font-weight: 700;">
+                            {{ order.product.title }}
+                        </h2>
+                        <span style="font-size: 20px; font-weight: 800; color: #333;">₹{{ order.product.price }}</span>
+                    </div>
 
-                   class="cancel-btn">
+                    <p style="color: #888; font-size: 13px; margin-bottom: 15px;">
+                        📅 Ordered on: {{ order.ordered_at|date:"d M Y, h:i A" }}
+                    </p>
 
-                    Cancel Order
+                    <!-- Shipping and Delivery Info -->
+                    <div style="background: #fdfdfd; border: 1px solid #f0f0f0; border-radius: 12px; padding: 15px; margin-bottom: 15px;">
+                        <h4 style="color: #1f8f5f; font-size: 14px; margin-bottom: 6px; font-weight: bold;">🚚 Shipping Address</h4>
+                        {% if order.full_name %}
+                            <p style="font-size: 14px; margin: 2px 0;"><b>Name:</b> {{ order.full_name }}</p>
+                            <p style="font-size: 14px; margin: 2px 0;"><b>Phone:</b> {{ order.phone }}</p>
+                            <p style="font-size: 14px; margin: 2px 0; line-height: 1.4;"><b>Address:</b> {{ order.address }}, {{ order.city }}, {{ order.state }} - {{ order.pincode }}</p>
+                        {% else %}
+                            <p style="font-size: 13px; color: #888; font-style: italic;">No shipping details recorded for legacy order.</p>
+                        {% endif %}
+                    </div>
 
-                </a>
+                    <!-- Payment Info -->
+                    <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                        {% if order.payment_method == 'UPI' %}
+                            <span style="background: #e8f5ef; color: #1f8f5f; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; border: 1px solid #c8e6c9;">
+                                💳 Paid via UPI
+                            </span>
+                            {% if order.transaction_id %}
+                                <span style="font-family: monospace; font-size: 12px; color: #666;">
+                                    <b>TXN ID:</b> {{ order.transaction_id }}
+                                </span>
+                            {% endif %}
+                        {% elif order.payment_method == 'COD' %}
+                            <span style="background: #fff3e0; color: #e65100; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; border: 1px solid #ffe0b2;">
+                                💵 Cash on Delivery
+                            </span>
+                            <span style="background: #e3f2fd; color: #0d47a1; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; border: 1px solid #bbdefb;">
+                                Payment: {{ order.payment_status }}
+                            </span>
+                        {% else %}
+                            <span style="background: #e8f5ef; color: #1f8f5f; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: bold;">
+                                ✅ Paid
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; margin-top: 15px;">
+                    <a href="/cancel-order/{{ order.id }}/"
+                       class="cancel-btn"
+                       style="background: #e53935; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: bold; transition: 0.2s;"
+                       onmouseover="this.style.background='#c62828'"
+                       onmouseout="this.style.background='#e53935'"
+                       onclick="return confirm('Are you sure you want to cancel this order?');">
+                        Cancel Order
+                    </a>
+                </div>
 
             </div>
 
+        </div>
+
+        {% empty %}
+
+        <div style="text-align: center; margin-top: 50px;">
+            <p style="color: gray; font-size: 20px;">You haven't ordered any products yet.</p>
+            <br>
+            <a href="/products/" style="background: #1f8f5f; color: white; padding: 12px 25px; border-radius: 10px; text-decoration: none; font-weight: bold;">Shop Now</a>
         </div>
 
         {% endfor %}

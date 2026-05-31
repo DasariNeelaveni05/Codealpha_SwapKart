@@ -215,71 +215,146 @@ select{
     </div>
 
 </div>
-    <div class="checkout-container">
-
     <div class="delivery-section">
 
         <h1>🚚 Delivery Details</h1>
 
-        <form method="POST">
+        <form id="checkout-form" method="POST">
 
             {% csrf_token %}
 
             <label>Full Name</label>
-            <input type="text" placeholder="Enter full name">
+            <input type="text" name="full_name" placeholder="Enter full name" required>
 
             <label>Phone Number</label>
-            <input type="text" placeholder="Enter phone number">
+            <input type="text" name="phone" placeholder="Enter phone number" required>
 
             <label>Delivery Address</label>
-            <textarea placeholder="Enter delivery address"></textarea>
+            <textarea name="address" placeholder="Enter delivery address" required></textarea>
 
-            <label>City</label>
-            <input type="text" placeholder="Enter city">
-            <label>State</label>
+            <div style="display: flex; gap: 15px;">
+                <div style="flex: 1;">
+                    <label>City</label>
+                    <input type="text" name="city" placeholder="Enter city" required>
+                </div>
+                <div style="flex: 1;">
+                    <label>State</label>
+                    <select name="state" required style="width:100%; padding:14px; border:1px solid #ddd; border-radius:12px; background:#2a2a2a; color:white; font-size:15px;">
+                        <option value="">Select State</option>
+                        <option>Andhra Pradesh</option>
+                        <option>Telangana</option>
+                        <option>Karnataka</option>
+                        <option>Tamil Nadu</option>
+                        <option>Kerala</option>
+                        <option>Maharashtra</option>
+                        <option>Delhi</option>
+                        <option>Gujarat</option>
+                        <option>Rajasthan</option>
+                        <option>Uttar Pradesh</option>
+                    </select>
+                </div>
+            </div>
 
-<select name="state" required>
-    <option value="">Select State</option>
-    <option>Andhra Pradesh</option>
-    <option>Telangana</option>
-    <option>Karnataka</option>
-    <option>Tamil Nadu</option>
-    <option>Kerala</option>
-    <option>Maharashtra</option>
-    <option>Delhi</option>
-    <option>Gujarat</option>
-    <option>Rajasthan</option>
-    <option>Uttar Pradesh</option>
-    <label>PIN Code</label>
+            <label>PIN Code</label>
+            <input
+                type="text"
+                id="pincode"
+                name="pincode"
+                maxlength="6"
+                placeholder="Enter PIN Code"
+                required>
 
-<input
-    type="text"
-    id="pincode"
-    name="pincode"
-    maxlength="6"
-    placeholder="Enter PIN Code"
-    required>
+            <p id="location-result" style="color:#1f8f5f; font-weight:bold; margin-top:-15px; margin-bottom:20px; font-size:14px;"></p>
 
-<p id="location-result"></p>
+            <label>Payment Method</label>
+            <select
+                name="payment_method"
+                id="payment_method"
+                required
+                style="
+                width:100%;
+                padding:14px;
+                border-radius:12px;
+                margin-bottom:25px;
+                background:#2a2a2a;
+                color:white;
+                font-size:15px;
+                ">
+                <option value="COD">Cash On Delivery</option>
+                <option value="UPI">UPI (GPay / PhonePe / Paytm)</option>
+            </select>
 
-<label>Payment Method</label>
+            <!-- UPI Details Section (Shown when UPI is selected) -->
+            <div id="upi-details-section" style="display:none; background:#f9f9f9; padding:20px; border-radius:15px; border:1.5px dashed #1f8f5f; margin-bottom:25px;">
+                <h3 style="color:#1f8f5f; margin-bottom:15px; text-align:center;">📱 UPI Payment Options</h3>
+                
+                <div style="display:flex; justify-content:center; gap:20px; margin-bottom:15px;">
+                    <button type="button" id="tab-qr" style="background:#1f8f5f; color:white; padding:8px 15px; font-size:14px; border-radius:8px; width:auto;">Scan QR Code</button>
+                    <button type="button" id="tab-upi-id" style="background:#e0e0e0; color:#333; padding:8px 15px; font-size:14px; border-radius:8px; width:auto;">Enter UPI ID</button>
+                </div>
 
-<select
-    style="
-    width:100%;
-    padding:14px;
-    border-radius:12px;
-    margin-bottom:25px;
-    ">
+                <!-- QR Panel -->
+                <div id="qr-panel" style="text-align:center;">
+                    <div style="background:white; display:inline-block; padding:15px; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.1); margin-bottom:10px;">
+                        <!-- Styled SVG Mock QR Code -->
+                        <svg width="150" height="150" viewBox="0 0 100 100" style="display:block;">
+                            <rect width="100" height="100" fill="white"/>
+                            <!-- Corners -->
+                            <rect x="5" y="5" width="25" height="25" fill="#1f8f5f" rx="2"/>
+                            <rect x="9" y="9" width="17" height="17" fill="white" rx="1"/>
+                            <rect x="13" y="13" width="9" height="9" fill="#1f8f5f" rx="1"/>
 
-    <option>Cash On Delivery</option>
-    <option>UPI</option>
-    <option>Debit Card</option>
+                            <rect x="70" y="5" width="25" height="25" fill="#1f8f5f" rx="2"/>
+                            <rect x="74" y="9" width="17" height="17" fill="white" rx="1"/>
+                            <rect x="78" y="13" width="9" height="9" fill="#1f8f5f" rx="1"/>
 
-</select>
+                            <rect x="5" y="70" width="25" height="25" fill="#1f8f5f" rx="2"/>
+                            <rect x="9" y="74" width="17" height="17" fill="white" rx="1"/>
+                            <rect x="13" y="78" width="9" height="9" fill="#1f8f5f" rx="1"/>
+                            
+                            <!-- Center SwapKart Logo Mock -->
+                            <rect x="42" y="42" width="16" height="16" fill="#1f8f5f" rx="3"/>
+                            <path d="M46 50 L54 50 M50 46 L50 54" stroke="white" stroke-width="2"/>
 
-<button type="submit">
-    ✅ Place Order
+                            <!-- Random QR pixels -->
+                            <rect x="35" y="10" width="8" height="4" fill="#333"/>
+                            <rect x="45" y="15" width="4" height="8" fill="#333"/>
+                            <rect x="55" y="8" width="10" height="4" fill="#333"/>
+                            <rect x="35" y="25" width="6" height="6" fill="#333"/>
+                            <rect x="45" y="32" width="12" height="4" fill="#333"/>
+                            
+                            <rect x="10" y="35" width="4" height="10" fill="#333"/>
+                            <rect x="20" y="40" width="8" height="4" fill="#333"/>
+                            <rect x="32" y="45" width="4" height="8" fill="#333"/>
+                            
+                            <rect x="80" y="35" width="10" height="4" fill="#333"/>
+                            <rect x="85" y="45" width="4" height="10" fill="#333"/>
+                            <rect x="68" y="50" width="8" height="6" fill="#333"/>
+                            
+                            <rect x="35" y="75" width="6" height="8" fill="#333"/>
+                            <rect x="45" y="80" width="10" height="4" fill="#333"/>
+                            <rect x="58" y="70" width="4" height="12" fill="#333"/>
+                            <rect x="68" y="80" width="12" height="6" fill="#333"/>
+                        </svg>
+                    </div>
+                    <p style="color:#666; font-size:13px; font-weight:bold;">Scan to Pay ₹{{ product.price }}</p>
+                    <p style="color:#888; font-size:11px; margin-top:2px;">UPI ID: swapkart@okaxis</p>
+                </div>
+
+                <!-- UPI ID Panel -->
+                <div id="upi-id-panel" style="display:none; text-align:center;">
+                    <input type="text" id="upi_id_input" placeholder="e.g. mobileNumber@upi / username@ybl" style="background:#fff; color:#333; border:1px solid #ccc; margin-bottom:10px;">
+                    <button type="button" id="btn-verify-upi" style="background:#ff9800; color:white; padding:10px; font-size:14px; border-radius:8px; width:auto; display:inline-block;">Verify UPI ID</button>
+                    <p id="upi-verify-result" style="font-size:13px; font-weight:bold; margin-top:10px;"></p>
+                </div>
+            </div>
+
+            <!-- Hidden field to send transaction ID to backend -->
+            <input type="hidden" name="transaction_id" id="transaction_id">
+
+            <button type="submit" id="btn-place-order">
+                ✅ Place Order
+            </button>
 
         </form>
 
@@ -320,32 +395,466 @@ select{
         </div>
 
     </div>
+
+    <!-- SIMULATED MOBILE UPI PAYMENT MODAL -->
+    <div id="upi-payment-overlay" class="upi-modal-overlay">
+        <style>
+            .upi-modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.7);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+            }
+            .upi-modal-overlay.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+            .upi-modal {
+                background: #fdfdfd;
+                width: 360px;
+                border-radius: 24px;
+                box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+                overflow: hidden;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                color: #222;
+                display: flex;
+                flex-direction: column;
+            }
+            .upi-header {
+                background: #f3f4f6;
+                padding: 16px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid #e5e7eb;
+            }
+            .upi-header-logo {
+                font-weight: 800;
+                font-size: 16px;
+                color: #1f8f5f;
+                letter-spacing: 0.5px;
+            }
+            .upi-header-title {
+                font-size: 13px;
+                color: #6b7280;
+                font-weight: 500;
+            }
+            .upi-merchant-info {
+                padding: 24px 20px 16px;
+                text-align: center;
+                border-bottom: 1px dashed #e5e7eb;
+            }
+            .upi-to-txt {
+                font-size: 12px;
+                color: #6b7280;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 4px;
+            }
+            .upi-merchant-name {
+                font-size: 18px;
+                font-weight: 700;
+                color: #111;
+                margin-bottom: 8px;
+            }
+            .upi-amount-badge {
+                font-size: 26px;
+                font-weight: 800;
+                color: #1f8f5f;
+            }
+            
+            /* Pin input screen */
+            .upi-pin-screen {
+                padding: 24px 20px;
+                text-align: center;
+            }
+            .upi-prompt {
+                font-size: 14px;
+                color: #4b5563;
+                margin-bottom: 20px;
+                font-weight: 600;
+            }
+            .upi-dots-container {
+                display: flex;
+                justify-content: center;
+                gap: 16px;
+                margin-bottom: 24px;
+            }
+            .upi-dot {
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                border: 2px solid #9ca3af;
+                transition: background 0.1s, border-color 0.1s;
+            }
+            .upi-dot.filled {
+                background: #1f8f5f;
+                border-color: #1f8f5f;
+            }
+            
+            /* Numeric keypad */
+            .upi-keypad {
+                background: #f9fafb;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                border-top: 1px solid #e5e7eb;
+            }
+            .upi-key {
+                padding: 20px;
+                font-size: 20px;
+                font-weight: 700;
+                border: none;
+                background: transparent;
+                cursor: pointer;
+                outline: none;
+                color: #374151;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: background 0.1s;
+            }
+            .upi-key:active {
+                background: #e5e7eb;
+            }
+            .upi-key-action {
+                font-size: 14px;
+                font-weight: 600;
+            }
+            .upi-key-submit {
+                background: #e8f5ef;
+                color: #1f8f5f;
+            }
+            .upi-key-submit:active {
+                background: #c8e6c9;
+            }
+
+            /* Processing Screen */
+            .upi-process-screen {
+                display: none;
+                padding: 40px 20px;
+                text-align: center;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 250px;
+            }
+            .upi-spinner {
+                border: 4px solid #f3f3f3;
+                border-top: 4px solid #1f8f5f;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                animation: upi-spin 1s linear infinite;
+                margin-bottom: 20px;
+            }
+            @keyframes upi-spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            .upi-process-status {
+                font-size: 16px;
+                font-weight: 600;
+                color: #4b5563;
+            }
+
+            /* Success Screen */
+            .upi-success-screen {
+                display: none;
+                padding: 40px 20px;
+                text-align: center;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 250px;
+            }
+            .upi-checkmark-wrapper {
+                width: 76px;
+                height: 76px;
+                border-radius: 50%;
+                background: #e8f5ef;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 20px;
+                animation: upi-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+            }
+            .upi-checkmark {
+                color: #1f8f5f;
+                font-size: 40px;
+                font-weight: bold;
+            }
+            @keyframes upi-pop {
+                0% { transform: scale(0); }
+                100% { transform: scale(1); }
+            }
+            .upi-success-title {
+                font-size: 20px;
+                font-weight: 800;
+                color: #1f8f5f;
+                margin-bottom: 8px;
+            }
+            .upi-success-desc {
+                font-size: 13px;
+                color: #6b7280;
+            }
+        </style>
+        <div class="upi-modal">
+            <!-- Header -->
+            <div class="upi-header">
+                <span class="upi-header-logo">SwapKart Pay 🔐</span>
+                <span class="upi-header-title">Secured by UPI</span>
+            </div>
+            <!-- Merchant -->
+            <div class="upi-merchant-info">
+                <div class="upi-to-txt">Paying Merchant</div>
+                <div class="upi-merchant-name">SwapKart Marketplace</div>
+                <div class="upi-amount-badge">₹{{ product.price }}</div>
+            </div>
+
+            <!-- PIN Screen -->
+            <div id="upi-screen-pin" class="upi-pin-screen">
+                <div class="upi-prompt">ENTER 6-DIGIT UPI PIN</div>
+                <div class="upi-dots-container">
+                    <div class="upi-dot" id="dot-0"></div>
+                    <div class="upi-dot" id="dot-1"></div>
+                    <div class="upi-dot" id="dot-2"></div>
+                    <div class="upi-dot" id="dot-3"></div>
+                    <div class="upi-dot" id="dot-4"></div>
+                    <div class="upi-dot" id="dot-5"></div>
+                </div>
+            </div>
+
+            <!-- Keypad -->
+            <div id="upi-modal-keypad" class="upi-keypad">
+                <button type="button" class="upi-key" onclick="pressUpiKey(1)">1</button>
+                <button type="button" class="upi-key" onclick="pressUpiKey(2)">2</button>
+                <button type="button" class="upi-key" onclick="pressUpiKey(3)">3</button>
+                <button type="button" class="upi-key" onclick="pressUpiKey(4)">4</button>
+                <button type="button" class="upi-key" onclick="pressUpiKey(5)">5</button>
+                <button type="button" class="upi-key" onclick="pressUpiKey(6)">6</button>
+                <button type="button" class="upi-key" onclick="pressUpiKey(7)">7</button>
+                <button type="button" class="upi-key" onclick="pressUpiKey(8)">8</button>
+                <button type="button" class="upi-key" onclick="pressUpiKey(9)">9</button>
+                <button type="button" class="upi-key upi-key-action" onclick="pressUpiKey('clear')" style="color:#d32f2f;">CLEAR</button>
+                <button type="button" class="upi-key" onclick="pressUpiKey(0)">0</button>
+                <button type="button" class="upi-key upi-key-submit" onclick="pressUpiKey('submit')">
+                    <span style="font-size:24px;">✓</span>
+                </button>
+            </div>
+
+            <!-- Processing Screen -->
+            <div id="upi-screen-processing" class="upi-process-screen">
+                <div class="upi-spinner"></div>
+                <div id="upi-status-text" class="upi-process-status">Connecting securely to issuer bank...</div>
+            </div>
+
+            <!-- Success Screen -->
+            <div id="upi-screen-success" class="upi-success-screen">
+                <div class="upi-checkmark-wrapper">
+                    <span class="upi-checkmark">✓</span>
+                </div>
+                <div class="upi-success-title">Payment Successful!</div>
+                <div class="upi-success-desc" id="upi-success-txn-id">Txn ID: UPI000000000000</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 <script>
-
+// Pincode and location mapping
 document.getElementById("pincode").addEventListener("input", function(){
-
     let pin = this.value;
-
     if(pin.length == 6){
-
         if(pin.startsWith("518")){
-            document.getElementById("location-result").innerHTML =
-            "📍 Kurnool, Andhra Pradesh";
+            document.getElementById("location-result").innerHTML = "📍 Kurnool, Andhra Pradesh";
         }
-
         else if(pin.startsWith("500")){
-            document.getElementById("location-result").innerHTML =
-            "📍 Hyderabad, Telangana";
+            document.getElementById("location-result").innerHTML = "📍 Hyderabad, Telangana";
         }
-
+        else if(pin.startsWith("560")){
+            document.getElementById("location-result").innerHTML = "📍 Bengaluru, Karnataka";
+        }
+        else if(pin.startsWith("600")){
+            document.getElementById("location-result").innerHTML = "📍 Chennai, Tamil Nadu";
+        }
+        else if(pin.startsWith("400")){
+            document.getElementById("location-result").innerHTML = "📍 Mumbai, Maharashtra";
+        }
+        else if(pin.startsWith("110")){
+            document.getElementById("location-result").innerHTML = "📍 New Delhi, Delhi";
+        }
         else{
-            document.getElementById("location-result").innerHTML =
-            "📍 Location Found";
+            document.getElementById("location-result").innerHTML = "📍 Location Found";
         }
+    } else {
+        document.getElementById("location-result").innerHTML = "";
     }
-
 });
 
+// Toggle UPI payment details
+const paymentMethodSelect = document.getElementById("payment_method");
+const upiDetailsSection = document.getElementById("upi-details-section");
+
+paymentMethodSelect.addEventListener("change", function() {
+    if(this.value === "UPI") {
+        upiDetailsSection.style.display = "block";
+    } else {
+        upiDetailsSection.style.display = "none";
+    }
+});
+
+// UPI details tab switching
+const tabQr = document.getElementById("tab-qr");
+const tabUpiId = document.getElementById("tab-upi-id");
+const qrPanel = document.getElementById("qr-panel");
+const upiIdPanel = document.getElementById("upi-id-panel");
+
+tabQr.addEventListener("click", function() {
+    tabQr.style.background = "#1f8f5f";
+    tabQr.style.color = "white";
+    tabUpiId.style.background = "#e0e0e0";
+    tabUpiId.style.color = "#333";
+    qrPanel.style.display = "block";
+    upiIdPanel.style.display = "none";
+});
+
+tabUpiId.addEventListener("click", function() {
+    tabUpiId.style.background = "#1f8f5f";
+    tabUpiId.style.color = "white";
+    tabQr.style.background = "#e0e0e0";
+    tabQr.style.color = "#333";
+    upiIdPanel.style.display = "block";
+    qrPanel.style.display = "none";
+});
+
+// Verify UPI ID simulation
+const btnVerifyUpi = document.getElementById("btn-verify-upi");
+const upiIdInput = document.getElementById("upi_id_input");
+const upiVerifyResult = document.getElementById("upi-verify-result");
+
+btnVerifyUpi.addEventListener("click", function() {
+    let upiVal = upiIdInput.value.trim();
+    if(upiVal.includes("@")) {
+        upiVerifyResult.style.color = "green";
+        upiVerifyResult.innerHTML = "✓ UPI ID Verified (Associated with " + upiVal.split("@")[0].toUpperCase() + ")";
+    } else {
+        upiVerifyResult.style.color = "red";
+        upiVerifyResult.innerHTML = "✗ Invalid UPI ID format. Please use user@bankformat.";
+    }
+});
+
+// UPI PIN Entry Modal Logic
+let currentPin = "";
+const overlay = document.getElementById("upi-payment-overlay");
+const checkoutForm = document.getElementById("checkout-form");
+const transactionIdInput = document.getElementById("transaction_id");
+
+// Form submit intercept
+checkoutForm.addEventListener("submit", function(event) {
+    if (paymentMethodSelect.value === "UPI") {
+        event.preventDefault(); // Intercept submit
+        
+        // Open UPI PIN screen overlay
+        currentPin = "";
+        updateUpiDots();
+        
+        document.getElementById("upi-screen-pin").style.display = "block";
+        document.getElementById("upi-modal-keypad").style.display = "grid";
+        document.getElementById("upi-screen-processing").style.display = "none";
+        document.getElementById("upi-screen-success").style.display = "none";
+        
+        overlay.classList.add("active");
+    }
+    // If COD, form submits normally
+});
+
+// Keypad press handler
+function pressUpiKey(key) {
+    if (key === 'clear') {
+        if(currentPin.length > 0) {
+            currentPin = currentPin.slice(0, -1);
+            updateUpiDots();
+        }
+    } else if (key === 'submit') {
+        if(currentPin.length >= 4) {
+            processSimulatedPayment();
+        } else {
+            alert("Please enter a valid 4 to 6 digit UPI PIN.");
+        }
+    } else {
+        if (currentPin.length < 6) {
+            currentPin += key;
+            updateUpiDots();
+            
+            // Auto submit if 6 digits entered
+            if(currentPin.length === 6) {
+                setTimeout(processSimulatedPayment, 300);
+            }
+        }
+    }
+}
+
+// Update dots UI
+function updateUpiDots() {
+    for(let i=0; i<6; i++) {
+        let dot = document.getElementById("dot-" + i);
+        if(i < currentPin.length) {
+            dot.classList.add("filled");
+        } else {
+            dot.classList.remove("filled");
+        }
+    }
+}
+
+// Simulated banking authorization flow
+function processSimulatedPayment() {
+    // Hide PIN interface
+    document.getElementById("upi-screen-pin").style.display = "none";
+    document.getElementById("upi-modal-keypad").style.display = "none";
+    
+    // Show spinner screen
+    const procScreen = document.getElementById("upi-screen-processing");
+    const statusText = document.getElementById("upi-status-text");
+    procScreen.style.display = "flex";
+    
+    // Step 1: Connecting
+    statusText.innerText = "Connecting securely to NPCI network...";
+    
+    setTimeout(function() {
+        // Step 2: Validating
+        statusText.innerText = "Authorizing ₹{{ product.price }} with your bank...";
+        
+        setTimeout(function() {
+            // Generate mock transaction ID
+            let randDigits = Math.floor(100000000000 + Math.random() * 900000000000);
+            let txnId = "UPI" + randDigits;
+            transactionIdInput.value = txnId;
+            
+            // Hide processing, show success screen
+            procScreen.style.display = "none";
+            const succScreen = document.getElementById("upi-screen-success");
+            document.getElementById("upi-success-txn-id").innerText = "Txn ID: " + txnId;
+            succScreen.style.display = "flex";
+            
+            // Submit form after success animation completes
+            setTimeout(function() {
+                checkoutForm.submit();
+            }, 1800);
+            
+        }, 1500);
+        
+    }, 1500);
+}
 </script>
 
 </body>

@@ -108,39 +108,50 @@
 
         <h1>Welcome Back</h1>
 
+        {% if messages %}
+            {% for message in messages %}
+                <p style="color:#1b5e20; background:#e8f5e9; padding:10px; border-radius:8px; border:1px solid #c8e6c9; text-align:center; font-weight:bold; margin-bottom:20px; font-size:14px;">
+                    ✅ {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}
+
+        {% if error %}
+            <p style="color:#d32f2f; background:#ffebee; padding:10px; border-radius:8px; border:1px solid #ffcdd2; text-align:center; font-weight:bold; margin-bottom:20px; font-size:14px;">
+                ⚠️ {{ error }}
+            </p>
+        {% endif %}
+
         <form method="POST">
 
-    {% csrf_token %}
+            {% csrf_token %}
 
-    <input type="text" name="username" placeholder="Enter Username">
+            <input type="text" 
+                   name="username" 
+                   value="{{ username|default:'' }}"
+                   placeholder="Enter Username"
+                   required>
 
             <div class="password-box">
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter Password"
+                    required>
+                <span id="eye" onclick="togglePassword()">
+                    👁️
+                </span>
+            </div>
 
-    <input
-        type="password"
-        id="password"
-        name="password"
-        placeholder="Enter Password">
+            <button type="submit">
+                Login
+            </button>
 
-    <span id="eye" onclick="togglePassword()">
-        👁️
-    </span>
+        </form>
 
-</div>
-
-    <button type="submit">
-        Login
-    </button>
-
-</form>
-{% if error %}
-    <p style="color:red; text-align:center;">
-        {{ error }}
-    </p>
-{% endif %}
-
-        <p>
-            Smart exchange starts here.
+        <p style="text-align:center; margin-top:20px; color:#555;">
+            Don't have an account? <a href="/signup/" style="color:#1f8f5f; font-weight:bold; text-decoration:none; transition:0.2s;" onmouseover="this.style.color='#145e3e'" onmouseout="this.style.color='#1f8f5f'">Sign Up</a>
         </p>
 
     </div>
