@@ -67,6 +67,9 @@ def signup(request):
     return render(request, 'signup.html')
 
 
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth.models import User
+
 def login(request):
 
     if request.method == "POST":
@@ -74,17 +77,12 @@ def login(request):
         login_input = request.POST.get('username', '').strip()
         password = request.POST.get('password', '')
 
-        if not login_input or not password:
-            return render(request, 'login.html', {
-                'error': 'Please enter both username and password'
-    })
-    from django.contrib.auth.models import User
+        try:
+            user_obj = User.objects.get(email=login_input)
+            username = user_obj.username
+        except User.DoesNotExist:
+            username = login_input
 
-    try:
-        user_obj = User.objects.get(email=login_input)
-        username = user_obj.username
-    except:
-        username = login_input
         user = authenticate(
             request,
             username=username,
@@ -94,23 +92,16 @@ def login(request):
         if user is not None:
 
             auth_login(request, user)
-            
-            # Respect the next redirect parameter if present
-            next_url = request.GET.get('next', '/home/')
-            if not next_url.startswith('/') or next_url.startswith('//'):
-                next_url = '/home/'
 
-            return redirect(next_url)
+            return redirect('/home/')
 
         else:
 
             return render(request, 'login.html', {
-                'error': 'Invalid username or password',
-                'username': username
+                'error': 'Invalid username or password'
             })
 
     return render(request, 'login.html')
-
 
 @login_required
 def add_product(request):
