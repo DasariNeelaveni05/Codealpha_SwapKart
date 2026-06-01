@@ -51,6 +51,14 @@ def signup(request):
                 'email': email
             })
 
+        if User.objects.filter(email=email).exists():
+
+            return render(request, 'signup.html', {
+                'error': 'Email address already registered',
+                'username': username,
+                'email': email
+            })
+
         User.objects.create_user(
             username=username,
             email=email,
@@ -77,10 +85,10 @@ def login(request):
         login_input = request.POST.get('username', '').strip()
         password = request.POST.get('password', '')
 
-        try:
-            user_obj = User.objects.get(email=login_input)
+        user_obj = User.objects.filter(email=login_input).first()
+        if user_obj:
             username = user_obj.username
-        except User.DoesNotExist:
+        else:
             username = login_input
 
         user = authenticate(
@@ -141,23 +149,36 @@ def add_product(request):
 
 
 def products(request):
-
     search = request.GET.get('search')
+    category = request.GET.get('category')
+    max_price = request.GET.get('max_price')
+    exchange = request.GET.get('exchange')
+    sort = request.GET.get('sort')
 
     products = Product.objects.all()
 
     if search:
-        products = products.filter(
-            title__icontains=search
-        )
+        products = products.filter(title__icontains=search)
+    if category:
+        products = products.filter(category__iexact=category)
+    if max_price:
+        try:
+            products = products.filter(price__lte=int(max_price))
+        except ValueError:
+            pass
+    if exchange == 'true':
+        products = products.filter(exchange=True)
 
-    products = products.order_by('-created_at')
+    if sort == 'price_asc':
+        products = products.order_by('price')
+    elif sort == 'price_desc':
+        products = products.order_by('-price')
+    else:
+        products = products.order_by('-created_at')
 
-    return render(request,
-                  'products.html',
-                  {
-                      'products': products
-                  })
+    return render(request, 'products.html', {
+        'products': products
+    })
 
 
 @login_required
@@ -241,9 +262,11 @@ def add_to_cart(request, product_id):
 def cart(request):
 
     cart_items = Cart.objects.filter(user=request.user)
+    total = sum(item.product.price for item in cart_items)
 
     return render(request, 'cart.html', {
-        'cart_items': cart_items
+        'cart_items': cart_items,
+        'total': total
     })
 
 
@@ -453,3 +476,7 @@ def reject_exchange(request, request_id):
         exchange_request.save()
 
     return redirect('/exchange-requests/')
+
+@login_required
+def profile(request):
+    return render(request, 'profile.html')

@@ -54,10 +54,6 @@ urlpatterns = [
         views.remove_from_cart,
         name='remove_from_cart'),
     
-    path('delete-product/<int:product_id>/',
-        views.delete_product,
-        name='delete_product'),
-    
     path('cancel-order/<int:order_id>/',
      views.cancel_order,
      name='cancel_order'),
@@ -89,6 +85,8 @@ path(
     views.reject_exchange,
     name='reject_exchange'
 ),
+
+path('profile/', views.profile, name='profile'),
 
 ]
 

@@ -1,106 +1,145 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Signup - SwapKart</title>
+{% extends 'base.html' %}
+{% load static %}
 
-    <style>
+{% block title %}Sign Up — SwapKart{% endblock %}
+{% block meta_description %}Create your SwapKart account – Buy, Sell & Exchange Products{% endblock %}
+{% block body_class %}sk-auth-page{% endblock %}
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
 
-        body{
-            font-family:Arial;
-            background:#f5f5f5;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-        }
+{% block content %}
+<div class="sk-auth-container">
+  {% include 'auth_brand_panel.html' %}
 
-        .signup-box{
-            background:white;
-            padding:40px;
-            width:350px;
-            border-radius:15px;
-            box-shadow:0 5px 15px rgba(0,0,0,0.1);
-        }
+  <div class="sk-auth-form-side">
+    <div class="sk-auth-card">
+      <div class="sk-auth-logo">
+        <a href="/"><div class="logo-text">♻ SwapKart</div></a>
+      </div>
 
-        h1{
-            text-align:center;
-            color:#00aa55;
-            margin-bottom:25px;
-        }
+      <h1 class="sk-auth-title">Create Account</h1>
+      <p class="sk-auth-subtitle">Join thousands of buyers, sellers &amp; exchangers</p>
 
-        input{
-            width:100%;
-            padding:12px;
-            margin-bottom:15px;
-            border:1px solid #ccc;
-            border-radius:8px;
-            font-size:16px;
-        }
+      {% if error %}
+        <div class="sk-toast error sk-toast-inline">
+          <span class="sk-toast-icon">!</span>
+          <span class="sk-toast-text">{{ error }}</span>
+        </div>
+      {% endif %}
 
-        button{
-            width:100%;
-            padding:12px;
-            background:#00cc66;
-            border:none;
-            color:white;
-            font-size:18px;
-            border-radius:8px;
-            cursor:pointer;
-        }
+      <form method="POST" id="signup-form">
+        {% csrf_token %}
 
-        p{
-            text-align:center;
-            margin-top:15px;
-        }
+        <div class="sk-form-group">
+          <label class="sk-label" for="username">Username</label>
+          <input class="sk-input" type="text" id="username" name="username"
+                 value="{{ username|default:'' }}"
+                 placeholder="Choose a unique username"
+                 required autocomplete="username"/>
+        </div>
 
-    </style>
+        <div class="sk-form-group">
+          <label class="sk-label" for="email">Email Address</label>
+          <input class="sk-input" type="email" id="email" name="email"
+                 value="{{ email|default:'' }}"
+                 placeholder="Enter your email"
+                 required autocomplete="email"/>
+        </div>
 
-</head>
+        <div class="sk-form-group">
+          <label class="sk-label" for="password">Password</label>
+          <div class="sk-input-wrap">
+            <input class="sk-input" type="password" id="password" name="password"
+                   placeholder="Create a strong password (min 8 chars)"
+                   required autocomplete="new-password"
+                   oninput="checkStrength(this.value)"/>
+            <button type="button" class="sk-pw-toggle" id="togglePw" onclick="togglePassword('password','togglePw')">Show</button>
+          </div>
+          <div class="pw-strength-bar"><div class="pw-strength-fill" id="strengthFill"></div></div>
+          <div class="pw-strength-text" id="strengthText"></div>
+        </div>
 
-<body>
+        <div class="sk-form-group">
+          <label class="sk-label" for="confirm_password">Confirm Password</label>
+          <div class="sk-input-wrap">
+            <input class="sk-input" type="password" id="confirm_password"
+                   placeholder="Re-enter your password"
+                   required autocomplete="new-password"/>
+            <button type="button" class="sk-pw-toggle" id="toggleConfirm" onclick="togglePassword('confirm_password','toggleConfirm')">Show</button>
+          </div>
+          <div class="pw-strength-text" id="confirmError" style="color:var(--danger);"></div>
+        </div>
 
-    <div class="signup-box">
+        <div class="sk-form-group">
+          <label class="sk-checkbox-wrap">
+            <input type="checkbox" id="terms" required/>
+            I agree to the <a href="#" class="sk-link">Terms &amp; Conditions</a> and <a href="#" class="sk-link">Privacy Policy</a>
+          </label>
+        </div>
 
-        <h1>Create Account</h1>
+        <button type="submit" class="btn-primary btn-full btn-lg" id="signupBtn">Create Account</button>
+      </form>
 
-        {% if error %}
-            <p style="color:#d32f2f; background:#ffebee; padding:10px; border-radius:8px; border:1px solid #ffcdd2; text-align:center; font-weight:bold; margin-bottom:20px; font-size:14px;">
-                ⚠️ {{ error }}
-            </p>
-        {% endif %}
+      <div class="sk-auth-highlights">
+        <div><span>🛍</span><small>Buy &amp; Sell</small></div>
+        <div><span>🔄</span><small>Exchange</small></div>
+        <div><span>🔒</span><small>Secure</small></div>
+      </div>
 
-        <form method="POST">
+      <div class="sk-auth-divider"><span>or</span></div>
 
-            {% csrf_token %}
-
-            <input type="text" 
-                   name="username" 
-                   value="{{ username|default:'' }}"
-                   placeholder="Enter Username"
-                   required>
-
-            <input type="email" 
-                   name="email" 
-                   value="{{ email|default:'' }}"
-                   placeholder="Enter Email"
-                   required>
-
-            <input type="password" 
-                   name="password" 
-                   placeholder="Enter Password"
-                   required>
-
-            <button type="submit">
-                Signup
-            </button>
-
-        </form>
-
-        <p style="text-align:center; margin-top:20px; color:#555;">
-            Already have an account? <a href="/login/" style="color:#1f8f5f; font-weight:bold; text-decoration:none; transition:0.2s;" onmouseover="this.style.color='#145e3e'" onmouseout="this.style.color='#1f8f5f'">Login</a>
-        </p>
-
+      <p class="sk-auth-footer-text">
+        Already have an account?
+        <a href="/login/" class="sk-link-bold">Sign In</a>
+      </p>
+      <p class="sk-auth-back"><a href="/">← Back to Home</a></p>
     </div>
+  </div>
+</div>
+{% endblock %}
 
-</body>
-</html>
+{% block extra_js %}
+<script>
+function checkStrength(pw) {
+  var fill = document.getElementById('strengthFill');
+  var text = document.getElementById('strengthText');
+  var score = 0;
+  if (pw.length >= 8) score++;
+  if (/[A-Z]/.test(pw)) score++;
+  if (/[0-9]/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  var levels = [
+    { w: '0%', c: 'transparent', t: '' },
+    { w: '25%', c: '#dc3545', t: 'Weak' },
+    { w: '50%', c: '#ffc107', t: 'Fair' },
+    { w: '75%', c: '#198754', t: 'Good' },
+    { w: '100%', c: '#146c43', t: 'Strong' }
+  ];
+  var l = levels[score];
+  fill.style.width = l.w;
+  fill.style.background = l.c;
+  text.textContent = l.t;
+  text.style.color = l.c || 'var(--text-muted)';
+}
+document.getElementById('signup-form').addEventListener('submit', function (e) {
+  var terms = document.getElementById('terms');
+  var pw = document.getElementById('password').value;
+  var confirm = document.getElementById('confirm_password').value;
+  var err = document.getElementById('confirmError');
+  err.textContent = '';
+  if (!terms.checked) {
+    e.preventDefault();
+    alert('Please accept the Terms & Conditions to continue.');
+    return;
+  }
+  if (pw !== confirm) {
+    e.preventDefault();
+    err.textContent = 'Passwords do not match.';
+    return;
+  }
+  var btn = document.getElementById('signupBtn');
+  btn.textContent = 'Creating account…';
+  btn.disabled = true;
+});
+</script>
+{% endblock %}

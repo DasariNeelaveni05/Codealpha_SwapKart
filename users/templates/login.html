@@ -1,185 +1,91 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login - SwapKart</title>
+{% extends 'base.html' %}
+{% load static %}
 
-    <style>
+{% block title %}Login — SwapKart{% endblock %}
+{% block meta_description %}Login to SwapKart – Buy, Sell & Exchange Products{% endblock %}
+{% block body_class %}sk-auth-page{% endblock %}
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
 
-        body{
-            font-family:Arial, sans-serif;
-            background:#f8f9fa;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-        }
+{% block content %}
+<div class="sk-auth-container">
+  {% include 'auth_brand_panel.html' %}
 
-        .login-box{
-            background:white;
-            width:350px;
-            padding:40px;
-            border-radius:18px;
-            box-shadow:0 5px 15px rgba(0,0,0,0.08);
-        }
+  <div class="sk-auth-form-side">
+    <div class="sk-auth-card">
+      <div class="sk-auth-logo">
+        <a href="/"><div class="logo-text">♻ SwapKart</div></a>
+      </div>
 
-        h1{
-            text-align:center;
-            margin-bottom:25px;
-            color:#1f8f5f;
-            font-weight:600;
-        }
+      <h1 class="sk-auth-title">Welcome Back</h1>
+      <p class="sk-auth-subtitle">Sign in to continue shopping and trading</p>
 
-        input{
-            width:100%;
-            padding:14px;
-            margin-bottom:18px;
-            border:1px solid #ddd;
-            border-radius:10px;
-            font-size:15px;
-        }
+      {% if messages %}
+        {% for message in messages %}
+          <div class="sk-toast success sk-toast-inline">
+            <span class="sk-toast-icon">✓</span>
+            <span class="sk-toast-text">{{ message }}</span>
+          </div>
+        {% endfor %}
+      {% endif %}
 
-        button{
-            width:100%;
-            padding:14px;
-            background:#1f8f5f;
-            border:none;
-            color:white;
-            border-radius:10px;
-            font-size:16px;
-            cursor:pointer;
-        }
+      {% if error %}
+        <div class="sk-toast error sk-toast-inline">
+          <span class="sk-toast-icon">!</span>
+          <span class="sk-toast-text">{{ error }}</span>
+        </div>
+      {% endif %}
 
-        p{
-            text-align:center;
-            margin-top:18px;
-            color:#666;
-        }
-        .password-box{
-    position:relative;
-    margin-bottom:18px;
-}
+      <form method="POST" id="login-form">
+        {% csrf_token %}
 
-.password-box input{
-    width:100%;
-    padding:14px;
-    border:1px solid #ddd;
-    border-radius:10px;
-    font-size:15px;
-}
+        <div class="sk-form-group">
+          <label class="sk-label" for="username">Username or Email</label>
+          <input class="sk-input" type="text" id="username" name="username"
+                 value="{{ username|default:'' }}"
+                 placeholder="Enter username or email"
+                 required autocomplete="username"/>
+        </div>
 
-.password-box span{
-    position:absolute;
-    right:15px;
-    top:40%;
-    transform:translateY(-50%);
-    cursor:pointer;
-    font-size:18px;
-}
-        @media (max-width:768px){
+        <div class="sk-form-group">
+          <label class="sk-label" for="password">Password</label>
+          <div class="sk-input-wrap">
+            <input class="sk-input" type="password" id="password" name="password"
+                   placeholder="Enter your password"
+                   required autocomplete="current-password"/>
+            <button type="button" class="sk-pw-toggle" id="togglePw" onclick="togglePassword('password','togglePw')">Show</button>
+          </div>
+        </div>
 
-    .container{
-        width:90%;
-        max-width:400px;
-        padding:35px 25px;
-    }
+        <div class="sk-auth-row">
+          <label class="sk-checkbox-wrap">
+            <input type="checkbox" name="remember" id="remember"/>
+            Remember me
+          </label>
+          <a href="#" class="sk-link">Forgot password?</a>
+        </div>
 
-    h1{
-        font-size:42px;
-    }
+        <button type="submit" class="btn-primary btn-full btn-lg" id="loginBtn">Sign In</button>
+      </form>
 
-    input{
-        padding:16px;
-        font-size:16px;
-    }
+      <div class="sk-auth-divider"><span>or</span></div>
 
-    button{
-        padding:16px;
-        font-size:18px;
-    }
-
-}
-
-    </style>
-</head>
-
-<body>
-
-    <div class="login-box">
-
-        <h1>Welcome Back</h1>
-
-        {% if messages %}
-            {% for message in messages %}
-                <p style="color:#1b5e20; background:#e8f5e9; padding:10px; border-radius:8px; border:1px solid #c8e6c9; text-align:center; font-weight:bold; margin-bottom:20px; font-size:14px;">
-                    ✅ {{ message }}
-                </p>
-            {% endfor %}
-        {% endif %}
-
-        {% if error %}
-            <p style="color:#d32f2f; background:#ffebee; padding:10px; border-radius:8px; border:1px solid #ffcdd2; text-align:center; font-weight:bold; margin-bottom:20px; font-size:14px;">
-                ⚠️ {{ error }}
-            </p>
-        {% endif %}
-
-        <form method="POST">
-
-            {% csrf_token %}
-
-            <input type="text" 
-                   name="username" 
-                   value="{{ username|default:'' }}"
-                   placeholder="Enter Username"
-                   required>
-
-            <div class="password-box">
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Enter Password"
-                    required>
-                <span id="eye" onclick="togglePassword()">
-                    👁️
-                </span>
-            </div>
-
-            <button type="submit">
-                Login
-            </button>
-
-        </form>
-
-        <p style="text-align:center; margin-top:20px; color:#555;">
-            Don't have an account? <a href="/signup/" style="color:#1f8f5f; font-weight:bold; text-decoration:none; transition:0.2s;" onmouseover="this.style.color='#145e3e'" onmouseout="this.style.color='#1f8f5f'">Sign Up</a>
-        </p>
-
+      <p class="sk-auth-footer-text">
+        Don't have an account?
+        <a href="/signup/" class="sk-link-bold">Create Account</a>
+      </p>
+      <p class="sk-auth-back"><a href="/">← Back to Home</a></p>
     </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
 <script>
-
-function togglePassword(){
-
-    const password =
-        document.getElementById("password");
-
-    const eye =
-        document.getElementById("eye");
-
-    if(password.type === "password"){
-
-        password.type = "text";
-        eye.innerHTML = "🙈";
-
-    }else{
-
-        password.type = "password";
-        eye.innerHTML = "👁️";
-
-    }
-
-}
-
+document.getElementById('login-form').addEventListener('submit', function () {
+  var btn = document.getElementById('loginBtn');
+  btn.textContent = 'Signing in…';
+  btn.disabled = true;
+});
 </script>
-</body>
-
-</html>
+{% endblock %}

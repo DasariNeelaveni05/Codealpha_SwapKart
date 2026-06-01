@@ -1,425 +1,182 @@
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>SwapKart - Vasthu Marpidi</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-        }
-
-        body{
-            font-family:Arial, sans-serif;
-            background:#f5f7f6;
-            color:#222;
-        }
-
-        .navbar{
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            padding:20px 60px;
-            background:white;
-            box-shadow:0 2px 15px rgba(0,0,0,0.05);
-        }
-
-        .logo{
-            font-size:32px;
-            font-weight:bold;
-            color:#1f8f5f;
-        }
-
-     .nav-links a{
-    text-decoration:none;
-    color:white;
-    background:#1f8f5f;
-    padding:10px 20px;
-    border-radius:10px;
-    font-size:16px;
-    font-weight:600;
-    margin-left:15px;
-    transition:0.3s;
-}
-.nav-links a:hover{
-    background:#18724c;
-}
-
-        .hero{
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            padding:80px 60px;
-            min-height:90vh;
-        }
-
-        .hero-text{
-            width:50%;
-        }
-
-        .tag{
-            background:#dff5ea;
-            color:#1f8f5f;
-            display:inline-block;
-            padding:10px 20px;
-            border-radius:30px;
-            margin-bottom:25px;
-            font-weight:bold;
-        }
-
-        h1{
-            font-size:58px;
-            line-height:1.3;
-            margin-bottom:25px;
-            color:#111;
-        }
-
-        .hero-text p{
-            font-size:19px;
-            line-height:1.9;
-            color:#666;
-        }
-
-        .buttons{
-            margin-top:40px;
-        }
-
-        .btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:16px 32px;
-    border-radius:12px;
-    text-decoration:none;
-    font-size:20px;
-    font-weight:600;
-    margin: 0;
-}
-
-        .login-btn{
-            background:#1f8f5f;
-            color:white;
-        }
-
-        .login-btn:hover{
-            background:#18724c;
-        }
-
-        .signup-btn{
-    background:#1f8f5f;
-    color:white;
-}
-
-.signup-btn:hover{
-    background:#18724c;
-    color:white;
-}
-
-        .hero-image{
-            width:42%;
-        }
-
-        .hero-image img{
-            width:100%;
-            border-radius:25px;
-            box-shadow:0 10px 30px rgba(0,0,0,0.15);
-        }
-
-        .section{
-            padding:80px 60px;
-            text-align:center;
-        }
-
-        .section h2{
-            color:#1f8f5f;
-            font-size:42px;
-            margin-bottom:20px;
-        }
-
-        .section p{
-            color:#666;
-            font-size:18px;
-            max-width:800px;
-            margin:auto;
-            line-height:1.8;
-        }
-
-        .cards{
-            display:flex;
-            justify-content:center;
-            gap:30px;
-            margin-top:50px;
-            flex-wrap:wrap;
-        }
-
-        .card{
-            width:320px;
-            background:white;
-            padding:35px;
-            border-radius:20px;
-            box-shadow:0 5px 20px rgba(0,0,0,0.08);
-            transition:0.3s;
-        }
-
-        .card:hover{
-            transform:translateY(-8px);
-        }
-
-        .card h3{
-            color:#1f8f5f;
-            margin-bottom:15px;
-            font-size:24px;
-        }
-
-        .card p{
-            color:#666;
-            line-height:1.7;
-        }
-        @media (max-width:768px){
-
-    .nav-links{
-        width:100%;
-        justify-content:center;
-        margin-top:15px;
-        gap:10px;
-    }
-
-    .nav-links a{
-        font-size:16px;
-        padding:10px;
-    }
-
-}
-@media (max-width:768px){
-
-    .buttons{
-        flex-direction:column;
-        align-items:flex-start;
-        gap:15px;
-    }
-
-    .btn{
-        width:220px;
-        text-align:center;
-    }
-
-}
- @media (max-width:768px){
-
-    .hero{
-        flex-direction:column;
-        text-align:center;
-        padding:30px 20px;
-    }
-
-    .hero-text{
-        width:100%;
-    }
-
-    .hero-text h1{
-        font-size:48px;
-        line-height:1.1;
-    }
-
-    .hero-text p{
-        font-size:20px;
-    }
-
-    .hero-image{
-        width:100%;
-        margin-top:30px;
-    }
-
-    .hero-image img{
-        width:100%;
-        max-width:400px;
-    }
-
-    .buttons{
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        gap:20px;
-        margin-top:40px;
-    }
-
-    .btn{
-        width:240px;
-        margin:0;
-    }
-
-}
-@media (max-width:768px){
-
-    .navbar{
-        flex-direction:column;
-        gap:15px;
-        text-align:center;
-    }
-
-    .nav-links{
-    display:flex;
-    gap:12px;
-    justify-content:center;
-    flex-wrap:wrap;
-}
-
-.nav-links a{
-    display:inline-block;
-    padding:10px 20px;
-}
-
-}
-@media (max-width: 768px){
-
-    .hero{
-        flex-direction:column;
-        text-align:center;
-        gap:20px;
-    }
-
-    .hero-content{
-        width:100%;
-    }
-
-    .hero-image{
-        width:100%;
-    }
-
-    .hero-image img{
-        width:100%;
-        max-width:320px;
-        height:auto;
-    }
-
-    .features{
-        flex-direction:column;
-        align-items:center;
-    }
-
-    .feature-card{
-        width:90%;
-        margin-bottom:15px;
-    }
-
-}
-
-    </style>
-
-</head>
-
-<body>
-
-   <div class="navbar">
-
-    <div class="logo">
-        SwapKart ♻️
-    </div>
-
-    <div class="nav-links">
-        <a href="/login/">Login</a>
-        <a href="/signup/">Signup</a>
-    </div>
-
-</div>
-
-    <div class="hero">
-
-        <div class="hero-text">
-
-            <div class="tag">
-                ♻️ Vasthu Marpidi Marketplace
-            </div>
-
-            <h2>
-                Buy, Sell & Exchange Products Easily
-            </h2>
-
-            <p>
-                SwapKart helps students and families exchange,
-                sell and reuse products affordably instead of
-                wasting money on brand-new items.
-            </p>
-
-            <div class="buttons">
-
-                <a href="/login/" class="btn login-btn">
-                    Start Exchanging
-                </a>
-
-                <a href="/signup/" class="btn signup-btn">
-                    Create Account
-                </a>
-
-            </div>
-
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}SwapKart – India's Smartest Marketplace{% endblock %}
+{% block meta_description %}SwapKart – Buy, Sell & Exchange pre-owned products. Join thousands of happy buyers and sellers.{% endblock %}
+
+{% block content %}
+
+<section class="sk-hero">
+  <div class="sk-container">
+    <div class="sk-hero-grid">
+      <div>
+        <div class="sk-hero-badge">India's Smartest Marketplace</div>
+        <h1 class="sk-hero-title">
+          Buy, Sell &amp;<br/>
+          <span class="text-gradient">Exchange</span><br/>
+          with Ease
+        </h1>
+        <p class="sk-hero-desc">Give unused items a second life. Shop thousands of pre-owned products or list yours in under 2 minutes — completely free.</p>
+        <form method="GET" action="/products/" class="sk-search-hero-wrap">
+          <div class="sk-search-wrap sk-search-hero">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <input type="text" name="search" placeholder="Search mobiles, laptops, books, furniture…"/>
+            <button type="submit" class="search-btn">Search</button>
+          </div>
+        </form>
+        <div class="sk-hero-cta">
+          <a href="/products/" class="btn-primary btn-lg">Browse Products</a>
+          <a href="/signup/" class="btn-secondary btn-lg">Start Selling</a>
         </div>
-
-        <div class="hero-image">
-
-           <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop"
-     alt="Students Exchanging Books">
-        </div>
-
+      </div>
+      <div class="sk-hero-image">
+        <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&amp;w=900&amp;auto=format&amp;fit=crop" alt="SwapKart marketplace"/>
+      </div>
     </div>
+  </div>
+</section>
 
-    <div class="section">
-
-        <h2>
-            How SwapKart Works
-        </h2>
-
-        <p>
-            Upload unused products, exchange them with others,
-            or sell them to earn money for buying useful items.
-            Save money while reducing waste through smart reuse.
-        </p>
-
-        <div class="cards">
-
-            <div class="card">
-
-                <h3>
-                    📦 Upload Products
-                </h3>
-
-                <p>
-                    Add old or unused items with images and details.
-                </p>
-
-            </div>
-
-            <div class="card">
-
-                <h3>
-                    🔄 Exchange Easily
-                </h3>
-
-                <p>
-                    Trade products with other users instead of spending more money.
-                </p>
-
-            </div>
-
-            <div class="card">
-
-                <h3>
-                    💸 Save Money
-                </h3>
-
-                <p>
-                    Sell old products and use that money to buy affordable items.
-                </p>
-
-            </div>
-
-        </div>
-
+<section class="sk-section sk-section-alt">
+  <div class="sk-container">
+    <div class="sk-section-heading">
+      <h2 class="sk-section-title">Shop by Category</h2>
+      <a href="/products/" class="sk-section-link">View All →</a>
     </div>
+    <div class="sk-categories">
+      <a href="/products/?category=Mobiles" class="sk-cat-chip"><span class="cat-icon">📱</span><span class="cat-label">Mobiles</span></a>
+      <a href="/products/?category=Laptops" class="sk-cat-chip"><span class="cat-icon">💻</span><span class="cat-label">Laptops</span></a>
+      <a href="/products/?category=Gadgets" class="sk-cat-chip"><span class="cat-icon">🎮</span><span class="cat-label">Gadgets</span></a>
+      <a href="/products/?category=Books" class="sk-cat-chip"><span class="cat-icon">📚</span><span class="cat-label">Books</span></a>
+      <a href="/products/?category=Furniture" class="sk-cat-chip"><span class="cat-icon">🪑</span><span class="cat-label">Furniture</span></a>
+      <a href="/products/?category=Cycles" class="sk-cat-chip"><span class="cat-icon">🚲</span><span class="cat-label">Cycles</span></a>
+      <a href="/products/?category=Clothing" class="sk-cat-chip"><span class="cat-icon">👕</span><span class="cat-label">Clothing</span></a>
+      <a href="/products/?category=others" class="sk-cat-chip"><span class="cat-icon">📦</span><span class="cat-label">Others</span></a>
+    </div>
+  </div>
+</section>
 
-</body>
-</html>
+<section class="sk-section">
+  <div class="sk-container">
+    <div class="sk-section-heading">
+      <h2 class="sk-section-title">Featured Products</h2>
+      <a href="/products/" class="sk-section-link">See All →</a>
+    </div>
+    <div class="sk-products-grid">
+      <a href="/products/" class="sk-product-card">
+        <div class="card-img-wrap"><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&amp;auto=format&amp;fit=crop" alt="Mobile"/><span class="card-badge">Hot</span></div>
+        <div class="card-body"><div class="card-category">Mobiles</div><div class="card-title">iPhone 13 Pro 256GB</div><div class="card-price">₹55,000</div></div>
+      </a>
+      <a href="/products/" class="sk-product-card">
+        <div class="card-img-wrap"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&amp;auto=format&amp;fit=crop" alt="Laptop"/></div>
+        <div class="card-body"><div class="card-category">Laptops</div><div class="card-title">Dell Inspiron 15</div><div class="card-price">₹38,000</div></div>
+      </a>
+      <a href="/products/" class="sk-product-card">
+        <div class="card-img-wrap"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&amp;auto=format&amp;fit=crop" alt="Furniture"/></div>
+        <div class="card-body"><div class="card-category">Furniture</div><div class="card-title">Wooden Study Desk</div><div class="card-price">₹6,500</div></div>
+      </a>
+      <a href="/products/" class="sk-product-card">
+        <div class="card-img-wrap"><img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=500&amp;auto=format&amp;fit=crop" alt="Books"/></div>
+        <div class="card-body"><div class="card-category">Books</div><div class="card-title">UPSC Study Kit</div><div class="card-price">₹1,200</div></div>
+      </a>
+    </div>
+  </div>
+</section>
 
+<section class="sk-section sk-section-soft">
+  <div class="sk-container">
+    <div class="text-center mb-4">
+      <h2 class="sk-section-title" style="padding-left:0;display:inline-block;">How It Works</h2>
+      <p class="sk-page-subtitle">Buy, Sell, or Exchange in three simple steps</p>
+    </div>
+    <div class="sk-how-grid">
+      <div class="sk-how-card">
+        <div class="sk-how-icon">🛍</div>
+        <h3>Buy</h3>
+        <p class="text-muted text-sm">Browse verified listings, add to cart, and checkout securely.</p>
+      </div>
+      <div class="sk-how-card">
+        <div class="sk-how-icon">📸</div>
+        <h3>Sell</h3>
+        <p class="text-muted text-sm">Upload photos, set your price, and reach buyers across India.</p>
+      </div>
+      <div class="sk-how-card">
+        <div class="sk-how-icon">🔄</div>
+        <h3>Exchange</h3>
+        <p class="text-muted text-sm">Swap items directly with other users — no middleman fees.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sk-section sk-section-alt">
+  <div class="sk-container">
+    <div class="sk-section-heading"><h2 class="sk-section-title">Marketplace Benefits</h2></div>
+    <div class="sk-benefit-grid">
+      <div class="sk-benefit-item"><div class="sk-benefit-icon">💸</div><div><h4>Zero Commission</h4><p class="text-sm text-muted">List unlimited products for free with no hidden fees.</p></div></div>
+      <div class="sk-benefit-item"><div class="sk-benefit-icon">🔄</div><div><h4>Easy Exchange</h4><p class="text-sm text-muted">Unique swap feature to trade items with other users.</p></div></div>
+      <div class="sk-benefit-item"><div class="sk-benefit-icon">📱</div><div><h4>Mobile Friendly</h4><p class="text-sm text-muted">Shop and sell beautifully on phone, tablet, or desktop.</p></div></div>
+      <div class="sk-benefit-item"><div class="sk-benefit-icon">⚡</div><div><h4>Fast Listings</h4><p class="text-sm text-muted">Publish your first product in under two minutes.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sk-section">
+  <div class="sk-container">
+    <div class="sk-section-heading"><h2 class="sk-section-title">Trust &amp; Safety</h2></div>
+    <div class="sk-trust-grid">
+      <div class="sk-trust-card"><span style="font-size:1.75rem;">✓</span><strong>Verified Sellers</strong><p class="text-sm text-muted">Community profiles you can trust</p></div>
+      <div class="sk-trust-card"><span style="font-size:1.75rem;">🔒</span><strong>Secure Checkout</strong><p class="text-sm text-muted">Protected payment options</p></div>
+      <div class="sk-trust-card"><span style="font-size:1.75rem;">🛡</span><strong>Buyer Support</strong><p class="text-sm text-muted">Help when you need it</p></div>
+      <div class="sk-trust-card"><span style="font-size:1.75rem;">📋</span><strong>Safety Tips</strong><p class="text-sm text-muted">Guidelines for safe deals</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sk-section sk-section-alt">
+  <div class="sk-container">
+    <div class="sk-stats-strip">
+      <div class="sk-stat-item"><div class="stat-number">50K+</div><div class="stat-label">Active Listings</div></div>
+      <div class="sk-stat-item"><div class="stat-number">25K+</div><div class="stat-label">Happy Users</div></div>
+      <div class="sk-stat-item"><div class="stat-number">10K+</div><div class="stat-label">Orders Completed</div></div>
+      <div class="sk-stat-item"><div class="stat-number">3K+</div><div class="stat-label">Successful Swaps</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sk-section">
+  <div class="sk-container">
+    <div class="sk-section-heading" style="justify-content:center;margin-bottom:2rem;">
+      <h2 class="sk-section-title" style="padding-left:0;">Customer Testimonials</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;">
+      <div class="sk-testimonial">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Sold my old laptop in just 3 hours! SwapKart made the process smooth and trustworthy."</p>
+        <div class="reviewer"><div class="reviewer-avatar">R</div><div><div class="reviewer-name">Rahul Sharma</div><div class="reviewer-role">Seller, Hyderabad</div></div></div>
+      </div>
+      <div class="sk-testimonial">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Exchanged my phone for a laptop. The exchange feature is brilliant for students."</p>
+        <div class="reviewer"><div class="reviewer-avatar">P</div><div><div class="reviewer-name">Priya Nair</div><div class="reviewer-role">Buyer, Bengaluru</div></div></div>
+      </div>
+      <div class="sk-testimonial">
+        <div class="stars">★★★★☆</div>
+        <p class="review-text">"Great deals on books and gadgets. Clean UI and easy to use on mobile."</p>
+        <div class="reviewer"><div class="reviewer-avatar">A</div><div><div class="reviewer-name">Arjun Patel</div><div class="reviewer-role">Student, Pune</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sk-section sk-section-soft text-center">
+  <div class="sk-container">
+    <h2 style="font-size:2rem;font-weight:900;margin-bottom:0.75rem;">Ready to Get Started?</h2>
+    <p class="sk-hero-desc" style="margin:0 auto 1.75rem;">Join SwapKart today and discover great deals or start selling in minutes.</p>
+    <div class="sk-hero-cta" style="justify-content:center;">
+      <a href="/signup/" class="btn-primary btn-lg">Create Free Account</a>
+      <a href="/products/" class="btn-secondary btn-lg">Browse Products</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
