@@ -39,7 +39,7 @@
 
       <div class="card-body">
         <span class="card-category">{{ product.category }}</span>
-        <h2 class="card-title" style="margin-bottom:0.5rem;"><a href="/product-detail/{{ product.id }}/">{{ product.title }}</a></h2>
+        <h2 class="card-title" style="margin-bottom:0.5rem;"><a href="/product/{{ product.id }}/">{{ product.title }}</a></h2>
         <div class="card-price" style="margin-bottom:0.75rem;">₹{{ product.price }}</div>
         
         <p style="color:var(--text-muted);font-size:0.8rem;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:1rem;">
@@ -47,7 +47,7 @@
         </p>
 
         <div class="card-actions" style="margin-top:auto;">
-          <a href="/product-detail/{{ product.id }}/" class="btn-ghost btn-sm" style="flex:1;text-align:center;">👁️ View</a>
+          <a href="/product/{{ product.id }}/" class="btn-ghost btn-sm" style="flex:1;text-align:center;">👁️ View</a>
           <a href="/delete-product/{{ product.id }}/" class="btn-danger btn-sm" style="flex:1;text-align:center;" onclick="return confirm('Are you sure you want to delete this product listing?');">🗑 Delete</a>
         </div>
       </div>

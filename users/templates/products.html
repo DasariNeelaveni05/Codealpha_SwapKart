@@ -67,17 +67,19 @@
         {% for product in products %}
         <div class="sk-product-card">
           <div class="card-img-wrap">
-            {% if product.image %}
-              <img src="{{ product.image.url }}" alt="{{ product.title }}"/>
-            {% else %}
-              <img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=400&amp;auto=format&amp;fit=crop" alt="{{ product.title }}"/>
-            {% endif %}
+            <a href="/product/{{ product.id }}/" class="card-img-link" aria-label="View {{ product.title }}">
+              {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.title }}"/>
+              {% else %}
+                <img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=400&amp;auto=format&amp;fit=crop" alt="{{ product.title }}"/>
+              {% endif %}
+            </a>
             {% if product.exchange %}<span class="card-badge">Exchange</span>{% endif %}
             <button type="button" class="card-wishlist" title="Wishlist">♡</button>
           </div>
           <div class="card-body">
             <div class="card-category">{{ product.category }}</div>
-            <div class="card-title">{{ product.title }}</div>
+            <a href="/product/{{ product.id }}/" class="card-title">{{ product.title }}</a>
             <div class="card-price">₹{{ product.price }}</div>
             <div class="card-meta">
               <span>{{ product.user.username }}</span>
